@@ -179,8 +179,9 @@ func main() {
 	}
 
 	if err := (&controller.BucketMonitorReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
+		Client:   mgr.GetClient(),
+		Scheme:   mgr.GetScheme(),
+		Recorder: mgr.GetEventRecorderFor("bucketmonitor"),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "Failed to create controller", "controller", "bucketmonitor")
 		os.Exit(1)
