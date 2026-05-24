@@ -41,12 +41,12 @@ type BucketMonitorSpec struct {
 
 // BucketMonitorStatus defines the observed state of BucketMonitor.
 type BucketMonitorStatus struct {
-	TotalSizeBytes int64      `json:"totalSizeBytes,omitempty"`
-	ObjectCount    int64      `json:"objectCount,omitempty"`
-	TotalSizeHuman string     `json:"totalSizeHuman,omitempty"`
+	TotalSizeBytes int64       `json:"totalSizeBytes,omitempty"`
+	ObjectCount    int64       `json:"objectCount,omitempty"`
+	TotalSizeHuman string      `json:"totalSizeHuman,omitempty"`
 	LastChecked    metav1.Time `json:"lastChecked,omitempty"`
-	Phase          string     `json:"phase,omitempty"`
-	Message        string     `json:"message,omitempty"`
+	Phase          string      `json:"phase,omitempty"`
+	Message        string      `json:"message,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -32,8 +32,8 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 
 	storagev1alpha1 "github.com/a1010s/s3-monitor-operator/api/v1alpha1"
-	s3client "github.com/a1010s/s3-monitor-operator/internal/s3"
 	"github.com/a1010s/s3-monitor-operator/internal/metrics"
+	s3client "github.com/a1010s/s3-monitor-operator/internal/s3"
 )
 
 // BucketMonitorReconciler reconciles a BucketMonitor object
