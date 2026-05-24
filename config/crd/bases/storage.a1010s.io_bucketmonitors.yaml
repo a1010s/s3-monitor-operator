@@ -1,0 +1,98 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.20.1
+  name: bucketmonitors.storage.a1010s.io
+spec:
+  group: storage.a1010s.io
+  names:
+    kind: BucketMonitor
+    listKind: BucketMonitorList
+    plural: bucketmonitors
+    singular: bucketmonitor
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.bucket
+      name: Bucket
+      type: string
+    - jsonPath: .status.totalSizeHuman
+      name: Size
+      type: string
+    - jsonPath: .status.objectCount
+      name: Objects
+      type: integer
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    - jsonPath: .status.lastChecked
+      name: LastChecked
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: BucketMonitor is the Schema for the bucketmonitors API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BucketMonitorSpec defines the desired state of BucketMonitor
+            properties:
+              alertThresholdMB:
+                format: int64
+                type: integer
+              bucket:
+                type: string
+              credentialsSecret:
+                type: string
+              endpoint:
+                type: string
+              interval:
+                default: 5m
+                type: string
+            required:
+            - bucket
+            - credentialsSecret
+            - endpoint
+            type: object
+          status:
+            description: BucketMonitorStatus defines the observed state of BucketMonitor.
+            properties:
+              lastChecked:
+                format: date-time
+                type: string
+              message:
+                type: string
+              objectCount:
+                format: int64
+                type: integer
+              phase:
+                type: string
+              totalSizeBytes:
+                format: int64
+                type: integer
+              totalSizeHuman:
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

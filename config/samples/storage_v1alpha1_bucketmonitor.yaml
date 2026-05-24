@@ -1,0 +1,9 @@
+apiVersion: storage.a1010s.io/v1alpha1
+kind: BucketMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: s3-monitor-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: bucketmonitor-sample
+spec:
+  # TODO(user): Add fields here
