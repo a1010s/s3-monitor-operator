@@ -83,9 +83,18 @@ spec:
       labels:
         app: garage
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: garage
           image: dxflrs/garage:v1.0.1
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
           ports:
             - containerPort: 3900
               name: s3
