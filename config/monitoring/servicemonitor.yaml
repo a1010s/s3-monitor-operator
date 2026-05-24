@@ -4,11 +4,12 @@ metadata:
   name: s3-monitor-operator
   namespace: monitoring
   labels:
-    app: s3-monitor-operator
+    release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: s3-monitor-operator
+      control-plane: controller-manager
   namespaceSelector:
     matchNames:
       - s3-monitor-operator-system
