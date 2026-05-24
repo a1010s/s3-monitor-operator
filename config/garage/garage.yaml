@@ -4,6 +4,33 @@ metadata:
   name: garage
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: garage-config
+  namespace: garage
+data:
+  garage.toml: |
+    metadata_dir = "/var/lib/garage/meta"
+    data_dir = "/var/lib/garage/data"
+    db_engine = "lmdb"
+    replication_factor = 1
+
+    rpc_bind_addr = "[::]:3901"
+
+    [s3_api]
+    s3_region = "us-east-1"
+    api_bind_addr = "[::]:3900"
+
+    [s3_web]
+    bind_addr = "[::]:3902"
+    root_domain = ".web.garage.localhost"
+    index = "index.html"
+
+    [admin]
+    api_bind_addr = "[::]:3903"
+---
+# Headless service for StatefulSet DNS
+apiVersion: v1
 kind: Service
 metadata:
   name: garage
@@ -12,6 +39,26 @@ spec:
   selector:
     app: garage
   clusterIP: None
+  ports:
+    - name: s3
+      port: 3900
+      targetPort: 3900
+    - name: rpc
+      port: 3901
+      targetPort: 3901
+    - name: admin
+      port: 3903
+      targetPort: 3903
+---
+# Regular service for S3 access from other namespaces
+apiVersion: v1
+kind: Service
+metadata:
+  name: garage-s3
+  namespace: garage
+spec:
+  selector:
+    app: garage
   ports:
     - name: s3
       port: 3900
@@ -42,11 +89,10 @@ spec:
           ports:
             - containerPort: 3900
               name: s3
+            - containerPort: 3901
+              name: rpc
             - containerPort: 3903
               name: admin
-          env:
-            - name: GARAGE_REPLICATION_FACTOR
-              value: "1"
           volumeMounts:
             - name: data
               mountPath: /var/lib/garage
@@ -65,31 +111,3 @@ spec:
         resources:
           requests:
             storage: 10Gi
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: garage-config
-  namespace: garage
-data:
-  garage.toml: |
-    metadata_dir = "/var/lib/garage/meta"
-    data_dir = "/var/lib/garage/data"
-    db_engine = "lmdb"
-    replication_factor = 1
-
-    [rpc_bind_addr]
-    [rpc_bind_addr]
-
-    [s3_api]
-    s3_region = "us-east-1"
-    api_bind_addr = "0.0.0.0:3900"
-    root_domain = ".s3.garage.localhost"
-
-    [s3_web]
-    bind_addr = "0.0.0.0:3902"
-    root_domain = ".web.garage.localhost"
-    index = "index.html"
-
-    [admin]
-    api_bind_addr = "0.0.0.0:3903"

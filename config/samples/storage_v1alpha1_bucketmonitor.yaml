@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   bucket: test-bucket
-  endpoint: garage.garage.svc.cluster.local:3900
+  endpoint: garage-s3.garage.svc.cluster.local:3900
   credentialsSecret: garage-creds
   interval: 1m
   alertThresholdMB: 100
