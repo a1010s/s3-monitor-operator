@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v2
+kind: PolicyException
+metadata:
+  name: garage-policy-exception
+  namespace: garage
+spec:
+  exceptions:
+    - policyName: require-resource-limits
+      ruleNames:
+        - require-limits
+        - autogen-require-limits
+  match:
+    any:
+      - resources:
+          kinds:
+            - Pod
+            - StatefulSet
+          namespaces:
+            - garage
