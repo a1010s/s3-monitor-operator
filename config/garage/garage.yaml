@@ -15,6 +15,7 @@ data:
     db_engine = "lmdb"
     replication_factor = 1
 
+    rpc_secret = "69c70cd4e73a5e70894f8cda91c6ec3752957ad899d84270b82e23e5a1cca1a8"
     rpc_bind_addr = "[::]:3901"
 
     [s3_api]
