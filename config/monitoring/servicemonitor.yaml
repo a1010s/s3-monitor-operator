@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: s3-monitor-operator
+  namespace: monitoring
+  labels:
+    app: s3-monitor-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: s3-monitor-operator
+  namespaceSelector:
+    matchNames:
+      - s3-monitor-operator-system
+  endpoints:
+    - port: metrics
+      interval: 30s
+      path: /metrics
